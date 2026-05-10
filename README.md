@@ -6,17 +6,22 @@
 ![JWT](https://img.shields.io/badge/JWT-Authentication-orange)
 ![Swagger](https://img.shields.io/badge/Swagger-Flasgger-brightgreen)
 
-Đây là đồ án môn học **[IE221] Kỹ thuật Lập trình Python**. Dự án cung cấp một hệ thống API RESTful mạnh mẽ phục vụ cho ứng dụng Đặt phòng Khách sạn, được xây dựng hoàn toàn bằng **Python, Flask** và kiến trúc **MVC**.
+Dự án cung cấp một hệ thống API RESTful mạnh mẽ phục vụ cho ứng dụng Đặt phòng Khách sạn, được xây dựng hoàn toàn bằng **Python, Flask** và kiến trúc **MVC**.
 
-## 🌟 Tính năng Nổi bật (Features)
+## 🌟 Tính năng chính
 
-- **Authentication & RBAC**: Đăng ký, Đăng nhập với JSON Web Token (JWT). Phân quyền tự động giữa `Guest`, `Registered User` và `Admin`.
-- **Quản lý Khách sạn & Phòng**: Hỗ trợ đầy đủ các thao tác CRUD dành cho quản trị viên, tìm kiếm và phân trang khách sạn cho Guest.
-- **Thuật toán Kiểm tra Phòng trống**: Tự động quét cơ sở dữ liệu `Bookings` để trả về danh sách các phòng trống thực sự dựa trên khoảng thời gian `check_in` và `check_out`.
-- **Hệ thống Đặt phòng & Thanh toán**: Tự động tính toán tổng hóa đơn dựa trên số đêm ở lại và `base_price` của từng loại phòng. Chặn đặt trùng lịch.
-- **Đánh giá (Reviews)**: Xác thực người dùng phải từng hoàn tất việc đặt phòng tại một khách sạn mới có quyền đưa ra đánh giá sao (1-5) và bình luận.
-- **Bảo mật & Chuẩn hoá**: Password được băm bằng `Bcrypt`. Dữ liệu input/output được kiểm duyệt và format chặt chẽ qua `Marshmallow`. Global Error Handler bắt lỗi tập trung (JSON response).
-- **Tài liệu API Tự động**: Tích hợp sẵn `Swagger UI` thông qua `Flasgger`.
+### Dành cho Khách hàng (User)
+- **Tìm kiếm Khách sạn & Phòng**: Xem danh sách các khách sạn, tìm kiếm và lọc danh sách phòng trống chính xác theo ngày nhận/trả phòng.
+- **Đặt phòng**: Thực hiện đặt phòng nhanh chóng, hệ thống tự động kiểm tra trùng lịch và tính toán tổng hóa đơn dựa theo số đêm lưu trú.
+- **Quản lý Đặt phòng**: Xem lại lịch sử các phòng đã đặt của bản thân hoặc thực hiện thao tác hủy phòng.
+- **Đánh giá & Bình luận**: Được quyền để lại đánh giá (từ 1-5 sao) và bình luận cho khách sạn (chỉ áp dụng nếu khách hàng đã từng hoàn tất việc đặt phòng tại đó).
+- **Tài khoản cá nhân**: Đăng ký, đăng nhập an toàn để quản lý các thao tác đặt phòng.
+
+### Dành cho Quản trị viên (Admin)
+- **Quản lý Khách sạn**: Thêm mới, cập nhật thông tin chi tiết, hoặc xóa các khách sạn khỏi hệ thống.
+- **Quản lý Phòng & Hạng phòng**: Thiết lập các hạng phòng (Standard, Deluxe...), cấu hình giá tiền và sức chứa. Thêm các phòng vật lý vào khách sạn.
+- **Quản lý Tiện nghi**: Tạo danh sách các tiện nghi (WiFi, Hồ bơi, Spa...) và phân bổ chúng vào từng khách sạn cụ thể.
+- **Quản lý Người dùng**: Kiểm soát danh sách toàn bộ thành viên, có quyền cấp quyền quản trị (admin) cho người khác hoặc xóa tài khoản.
 
 ## 🛠️ Công nghệ Sử dụng (Tech Stack)
 
@@ -25,6 +30,26 @@
 - **Security**: Flask-JWT-Extended, Flask-Bcrypt, Flask-CORS
 - **Validation**: Marshmallow, Flask-Marshmallow
 - **API Documentation**: Flasgger
+
+## 📂 Cấu trúc Thư mục (Project Structure)
+```
+IE221_HotelBookingAPI/
+├── app/
+│   ├── controllers/      # Logic xử lý nghiệp vụ
+│   ├── models/           # Định nghĩa cấu trúc bảng CSDL (SQLAlchemy)
+│   ├── schemas/          # Xác thực dữ liệu đầu vào và đầu ra (Marshmallow)
+│   ├── views/            # Các tuyến đường API Endpoints (Blueprints)
+│   ├── utils/            # Custom Decorators và Global Error Handlers
+│   ├── config.py         
+│   └── __init__.py       
+├── migrations/           
+├── venv/                 
+├── .env                  
+├── .gitignore            
+├── requirements.txt      
+├── run.py                
+└── schema.dbml           
+```
 
 ## 🚀 Hướng dẫn Cài đặt & Chạy (Installation)
 
@@ -75,28 +100,5 @@ Server sẽ chạy ở địa chỉ: `http://localhost:5000`
 
 ## 📖 Tài liệu API (API Documentation - Swagger)
 
-Khi server đang chạy, bạn có thể xem danh sách toàn bộ API và thao tác thử trực tiếp thông qua giao diện **Swagger UI**:
+Khi server đang chạy, có thể xem danh sách toàn bộ API và thao tác thử trực tiếp thông qua giao diện **Swagger UI**:
 👉 **[http://localhost:5000/apidocs/](http://localhost:5000/apidocs/)**
-
-## 📂 Cấu trúc Thư mục (Project Structure)
-```
-IE221_HotelBookingAPI/
-├── app/
-│   ├── controllers/      # Logic xử lý nghiệp vụ
-│   ├── models/           # Định nghĩa cấu trúc bảng CSDL (SQLAlchemy)
-│   ├── schemas/          # Xác thực dữ liệu đầu vào và đầu ra (Marshmallow)
-│   ├── views/            # Các tuyến đường API Endpoints (Blueprints)
-│   ├── utils/            # Custom Decorators và Global Error Handlers
-│   ├── config.py         # Thiết lập môi trường Development/Production
-│   └── __init__.py       # Khởi tạo Flask app và các thư viện
-├── migrations/           # Lịch sử thay đổi Database (Alembic)
-├── venv/                 # Môi trường ảo Python
-├── .env                  # Biến môi trường bảo mật (Không push lên Git)
-├── .gitignore            # Các file rác loại trừ khỏi Git
-├── requirements.txt      # Danh sách thư viện
-├── run.py                # Script khởi động chính
-└── schema.dbml           # Bản vẽ Database (ERD) dùng trên dbdiagram.io
-```
-
-## 👨‍💻 Tác giả (Author)
-Đồ án thuộc về Sinh viên thực hiện môn [IE221] Kỹ thuật Lập trình Python.
