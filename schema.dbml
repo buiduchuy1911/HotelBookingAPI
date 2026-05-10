@@ -1,0 +1,68 @@
+Table users {
+  id integer [primary key]
+  email varchar [unique, not null]
+  password_hash varchar [not null]
+  full_name varchar [not null]
+  role varchar [default: 'registered', note: 'admin or registered']
+  created_at datetime
+}
+
+Table hotels {
+  id integer [primary key]
+  name varchar [not null]
+  address varchar [not null]
+  description text
+  star_rating integer
+  created_at datetime
+}
+
+Table room_types {
+  id integer [primary key]
+  name varchar [not null]
+  max_occupancy integer [not null]
+  base_price decimal [not null]
+  description text
+}
+
+Table rooms {
+  id integer [primary key]
+  room_number varchar [not null]
+  room_type_id integer [ref: > room_types.id]
+  hotel_id integer [ref: > hotels.id]
+  is_available boolean [default: true]
+}
+
+Table amenities {
+  id integer [primary key]
+  name varchar [unique, not null]
+  description varchar
+}
+
+Table hotel_amenities {
+  hotel_id integer [ref: > hotels.id]
+  amenity_id integer [ref: > amenities.id]
+  
+  Indexes {
+    (hotel_id, amenity_id) [pk]
+  }
+}
+
+Table bookings {
+  id integer [primary key]
+  user_id integer [ref: > users.id]
+  room_id integer [ref: > rooms.id]
+  check_in_date date [not null]
+  check_out_date date [not null]
+  total_price decimal [not null]
+  status varchar [default: 'confirmed', note: 'pending/confirmed/cancelled']
+  created_at datetime
+}
+
+Table reviews {
+  id integer [primary key]
+  user_id integer [ref: > users.id]
+  hotel_id integer [ref: > hotels.id]
+  rating integer [not null, note: '1 to 5']
+  comment text
+  created_at datetime
+}
