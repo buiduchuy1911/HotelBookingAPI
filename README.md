@@ -73,11 +73,14 @@ pip install -r requirements.txt
 ```
 
 ### 2. Cấu hình Biến Môi trường
-Tạo một file `.env` ở thư mục gốc của dự án và điền các thông tin sau:
+Tạo một file `.env` ở thư mục gốc của dự án và sao chép toàn bộ các cấu hình sau dán vào:
 ```env
-SECRET_KEY=your-super-secret-key
-JWT_SECRET_KEY=your-jwt-secret-key
+FLASK_APP=run.py
 FLASK_ENV=development
+FLASK_DEBUG=1
+SECRET_KEY=super-secret-key-change-in-production
+JWT_SECRET_KEY=jwt-super-secret-key-change-in-production
+DATABASE_URI=sqlite:///hotel_booking.db
 ```
 
 ### 3. Khởi tạo Cơ sở dữ liệu (Database)
@@ -90,6 +93,9 @@ flask db migrate -m "Initial migration"
 
 # Áp dụng migration vào database
 flask db upgrade
+
+# Tạo dữ liệu mẫu (Khách sạn, Phòng, Tài khoản dùng thử)
+python seed.py
 ```
 
 ### 4. Chạy Server

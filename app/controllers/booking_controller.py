@@ -61,6 +61,10 @@ def get_user_bookings():
     bookings = Booking.query.filter_by(user_id=user_id).all()
     return jsonify(bookings_schema.dump(bookings)), 200
 
+def get_all_bookings():
+    bookings = Booking.query.all()
+    return jsonify(bookings_schema.dump(bookings)), 200
+
 def delete_booking(booking_id):
     user_id = get_jwt_identity()
     claims = get_jwt()

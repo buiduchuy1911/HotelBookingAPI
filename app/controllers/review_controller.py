@@ -49,3 +49,20 @@ def get_reviews(hotel_id):
         "total_reviews": len(reviews),
         "reviews": reviews_schema.dump(reviews)
     }), 200
+
+def delete_review(review_id):
+    from app.models.user import User
+    
+    user_id = get_jwt_identity()
+    user = User.query.get(user_id)
+    review = Review.query.get(review_id)
+    
+    if not review:
+        return jsonify({"message": "Review not found."}), 404
+        
+    if review.user_id != user_id and user.role != 'admin':
+        return jsonify({"message": "You do not have permission to delete this review."}), 403
+        
+    db.session.delete(review)
+    db.session.commit()
+    return jsonify({"message": "Review deleted successfully."}), 200

@@ -58,3 +58,31 @@ def get_reviews_route(hotel_id):
         description: List of reviews
     """
     return get_reviews(hotel_id)
+
+@review_bp.route('/reviews/<int:review_id>', methods=['DELETE'])
+@jwt_required()
+def delete_review_route(review_id):
+    """
+    Delete a review
+    ---
+    tags:
+      - Reviews
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: review_id
+        type: integer
+        required: true
+        description: ID of the review to delete
+    responses:
+      200:
+        description: Review deleted successfully
+      403:
+        description: You do not have permission to delete this review
+      404:
+        description: Review not found
+    """
+    from app.controllers.review_controller import delete_review
+    return delete_review(review_id)
+

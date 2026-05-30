@@ -38,3 +38,22 @@ def add_amenity_to_hotel(hotel_id, amenity_id):
     db.session.commit()
 
     return jsonify({"message": f"Added {amenity.name} to {hotel.name}"}), 201
+
+def delete_amenity(amenity_id):
+    amenity = Amenity.query.get(amenity_id)
+    if not amenity:
+        return jsonify({"message": "Amenity not found"}), 404
+        
+    db.session.delete(amenity)
+    db.session.commit()
+    return jsonify({"message": "Amenity deleted successfully"}), 200
+
+def remove_amenity_from_hotel(hotel_id, amenity_id):
+    hotel_amenity = HotelAmenity.query.filter_by(hotel_id=hotel_id, amenity_id=amenity_id).first()
+    
+    if not hotel_amenity:
+        return jsonify({"message": "Hotel does not have this amenity"}), 404
+        
+    db.session.delete(hotel_amenity)
+    db.session.commit()
+    return jsonify({"message": "Amenity removed from hotel"}), 200

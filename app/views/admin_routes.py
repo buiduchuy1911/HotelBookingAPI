@@ -70,3 +70,20 @@ def delete_user_route(user_id):
         description: User deleted
     """
     return delete_user(user_id)
+
+@admin_bp.route('/bookings', methods=['GET'])
+@role_required('admin')
+def get_all_bookings_route():
+    """
+    Get all bookings across the system (Admin only)
+    ---
+    tags:
+      - Admin Bookings
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: List of all bookings
+    """
+    from app.controllers.booking_controller import get_all_bookings
+    return get_all_bookings()

@@ -1,5 +1,8 @@
 from flask import Blueprint
-from app.controllers.room_controller import get_room_types, create_room_type, get_rooms, create_room, get_available_rooms
+from app.controllers.room_controller import (
+    get_room_types, create_room_type, update_room_type, delete_room_type,
+    get_rooms, create_room, delete_room, get_available_rooms
+)
 from app.utils.decorators import role_required
 
 room_bp = Blueprint('room_bp', __name__)
@@ -52,6 +55,67 @@ def create_room_type_route():
     """
     return create_room_type()
 
+@room_bp.route('/types/<int:type_id>', methods=['PUT'])
+@role_required('admin')
+def update_room_type_route(type_id):
+    """
+    Update a room type (Admin only)
+    ---
+    tags:
+      - Rooms
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: type_id
+        type: integer
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+            max_occupancy:
+              type: integer
+            base_price:
+              type: number
+            description:
+              type: string
+    responses:
+      200:
+        description: Room type updated
+      404:
+        description: Room type not found
+    """
+    return update_room_type(type_id)
+
+@room_bp.route('/types/<int:type_id>', methods=['DELETE'])
+@role_required('admin')
+def delete_room_type_route(type_id):
+    """
+    Delete a room type (Admin only)
+    ---
+    tags:
+      - Rooms
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: type_id
+        type: integer
+        required: true
+    responses:
+      200:
+        description: Room type deleted
+      400:
+        description: Cannot delete because it is in use
+      404:
+        description: Room type not found
+    """
+    return delete_room_type(type_id)
 @room_bp.route('', methods=['GET'])
 @role_required('admin')
 def get_rooms_route():
@@ -103,6 +167,30 @@ def create_room_route():
     """
     return create_room()
 
+@room_bp.route('/<int:room_id>', methods=['DELETE'])
+@role_required('admin')
+def delete_room_route(room_id):
+    """
+    Delete a physical room (Admin only)
+    ---
+    tags:
+      - Rooms
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: room_id
+        type: integer
+        required: true
+    responses:
+      200:
+        description: Room deleted
+      400:
+        description: Cannot delete room with active future bookings
+      404:
+        description: Room not found
+    """
+    return delete_room(room_id)
 @room_bp.route('/availability', methods=['GET'])
 def get_available_rooms_route():
     """
