@@ -1,3 +1,4 @@
+# pyrefly: ignore [missing-import]
 from flask import request, jsonify
 from app import db, bcrypt
 from app.models.user import User
@@ -8,7 +9,6 @@ from marshmallow import ValidationError
 def register_user():
     schema = UserRegistrationSchema()
     try:
-        # Validate data
         data = schema.load(request.json)
     except ValidationError as err:
         return jsonify(err.messages), 400

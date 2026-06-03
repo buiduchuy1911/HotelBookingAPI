@@ -8,11 +8,11 @@ from app.models.amenity import Amenity, HotelAmenity
 app = create_app()
 
 with app.app_context():
-    print("⏳ Đang dọn dẹp dữ liệu cũ...")
+    print("Đang dọn dẹp dữ liệu cũ...")
     db.drop_all()
     db.create_all()
 
-    print("🔑 Đang tạo tài khoản...")
+    print("Đang tạo tài khoản...")
     # Tạo Admin
     admin = User(email='admin@hotel.com', full_name='Quản trị viên', role='admin')
     admin.password_hash = bcrypt.generate_password_hash('123456').decode('utf-8')
@@ -24,7 +24,7 @@ with app.app_context():
     db.session.add_all([admin, user1])
     db.session.commit()
 
-    print("🏊 Đang tạo tiện nghi (Amenities)...")
+    print("Đang tạo tiện nghi (Amenities)...")
     wifi = Amenity(name='Free WiFi', description='Internet tốc độ cao miễn phí')
     pool = Amenity(name='Hồ bơi vô cực', description='Hồ bơi ngoài trời nhìn ra biển')
     spa = Amenity(name='Spa & Massage', description='Dịch vụ thư giãn cao cấp')
@@ -33,7 +33,7 @@ with app.app_context():
     db.session.add_all([wifi, pool, spa, gym])
     db.session.commit()
 
-    print("🏨 Đang tạo danh sách khách sạn...")
+    print("Đang tạo danh sách khách sạn...")
     hotel1 = Hotel(
         name='The Grand Plaza', 
         address='123 Nguyễn Huệ, Quận 1, TP.HCM', 
@@ -58,7 +58,7 @@ with app.app_context():
     db.session.add_all([hotel1, hotel2, hotel3])
     db.session.commit() # Commit để lấy ID cho khách sạn
 
-    print("🔗 Đang liên kết Khách sạn & Tiện nghi...")
+    print("Đang liên kết Khách sạn & Tiện nghi...")
     hotel_amenities = [
         # Hotel 1 có đủ 4 tiện nghi
         HotelAmenity(hotel_id=hotel1.id, amenity_id=wifi.id),
@@ -77,7 +77,7 @@ with app.app_context():
     db.session.add_all(hotel_amenities)
     db.session.commit()
 
-    print("🛏️ Đang cấu hình hạng phòng (Room Types)...")
+    print("Đang cấu hình hạng phòng (Room Types)...")
     standard = RoomType(name='Standard', max_occupancy=2, base_price=500000, description='Phòng tiêu chuẩn ấm cúng cho 2 người')
     deluxe = RoomType(name='Deluxe', max_occupancy=3, base_price=1000000, description='Phòng rộng rãi có ban công')
     suite = RoomType(name='Suite', max_occupancy=4, base_price=2500000, description='Phòng cao cấp nhất với phòng khách riêng biệt')
@@ -85,7 +85,7 @@ with app.app_context():
     db.session.add_all([standard, deluxe, suite])
     db.session.commit()
 
-    print("🚪 Đang tạo danh sách các phòng vật lý...")
+    print("Đang tạo danh sách các phòng vật lý...")
     rooms = []
     
     # Khách sạn 1 (The Grand Plaza)
@@ -107,7 +107,7 @@ with app.app_context():
     db.session.commit()
 
     print("="*50)
-    print("✅ KHỞI TẠO DỮ LIỆU MẪU (SEEDING) THÀNH CÔNG!")
+    print("Khởi tạo dữ liệu mẫu thành công")
     print("Tài khoản Quản trị: admin@hotel.com | Mật khẩu: 123456")
     print("Tài khoản Khách:   user@hotel.com  | Mật khẩu: 123456")
     print("="*50)
