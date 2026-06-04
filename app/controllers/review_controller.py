@@ -53,7 +53,7 @@ def get_reviews(hotel_id):
 def delete_review(review_id):
     from app.models.user import User
     
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     user = User.query.get(user_id)
     review = Review.query.get(review_id)
     

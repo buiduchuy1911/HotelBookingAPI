@@ -19,11 +19,10 @@ def get_room_types():
 
 def create_room_type():
     try:
-        data = room_type_schema.load(request.json)
+        new_room_type = room_type_schema.load(request.json)
     except ValidationError as err:
         return jsonify(err.messages), 400
     
-    new_room_type = RoomType(**data)
     db.session.add(new_room_type)
     db.session.commit()
     return jsonify(room_type_schema.dump(new_room_type)), 201
@@ -34,15 +33,12 @@ def update_room_type(type_id):
         return jsonify({"message": "Room type not found"}), 404
     
     try:
-        data = room_type_schema.load(request.json, partial=True)
+        updated_room_type = room_type_schema.load(request.json, instance=room_type, partial=True)
     except ValidationError as err:
         return jsonify(err.messages), 400
         
-    for key, value in data.items():
-        setattr(room_type, key, value)
-        
     db.session.commit()
-    return jsonify(room_type_schema.dump(room_type)), 200
+    return jsonify(room_type_schema.dump(updated_room_type)), 200
 
 def delete_room_type(type_id):
     room_type = RoomType.query.get(type_id)
@@ -63,15 +59,14 @@ def get_rooms():
 
 def create_room():
     try:
-        data = room_schema.load(request.json)
+        new_room = room_schema.load(request.json)
     except ValidationError as err:
         return jsonify(err.messages), 400
     
     # Check if room_number exists in hotel
-    if Room.query.filter_by(room_number=data['room_number'], hotel_id=data['hotel_id']).first():
+    if Room.query.filter_by(room_number=new_room.room_number, hotel_id=new_room.hotel_id).first():
         return jsonify({"message": "Room number already exists in this hotel"}), 400
 
-    new_room = Room(**data)
     db.session.add(new_room)
     db.session.commit()
     return jsonify(room_schema.dump(new_room)), 201

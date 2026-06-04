@@ -14,14 +14,13 @@ def get_amenities():
 
 def create_amenity():
     try:
-        data = amenity_schema.load(request.json)
+        new_amenity = amenity_schema.load(request.json)
     except ValidationError as err:
         return jsonify(err.messages), 400
 
-    if Amenity.query.filter_by(name=data['name']).first():
+    if Amenity.query.filter_by(name=new_amenity.name).first():
         return jsonify({"message": "Amenity already exists"}), 400
 
-    new_amenity = Amenity(**data)
     db.session.add(new_amenity)
     db.session.commit()
     return jsonify(amenity_schema.dump(new_amenity)), 201

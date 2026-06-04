@@ -42,16 +42,10 @@ def get_hotel(hotel_id):
 
 def create_hotel():
     try:
-        data = hotel_schema.load(request.json)
+        new_hotel = hotel_schema.load(request.json)
     except ValidationError as err:
         return jsonify(err.messages), 400
 
-    new_hotel = Hotel(
-        name=data['name'],
-        address=data['address'],
-        description=data.get('description'),
-        star_rating=data.get('star_rating')
-    )
     db.session.add(new_hotel)
     db.session.commit()
 

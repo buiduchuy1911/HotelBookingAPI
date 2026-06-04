@@ -1,65 +1,25 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[cod]
-*$py.class
+# Môi trường ảo (Virtual Environment)
+venv/
+env/
 
-# C extensions
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# Environment Variables
+# Cấu hình bảo mật và Biến môi trường
 .env
 .flaskenv
 
-# Database
+# Cơ sở dữ liệu và Thiết kế
+instance/
 *.db
 *.sqlite3
-hotel_booking.db
-hotel_booking_dev.db
-instance/
+*.dbml
 
-# Flask stuff
-.webassets-cache
+# File đệm của Python (Byte-compiled)
+__pycache__/
+*.pyc
 
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# IDE / Editor
+# Cấu hình của các trình soạn thảo (IDE)
 .vscode/
 .idea/
-*.swp
-*.swo
 
-# OS generated files
+# File hệ điều hành tự sinh ra
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
